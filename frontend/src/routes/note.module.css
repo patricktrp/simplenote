@@ -1,0 +1,11 @@
+.editor {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+.content-editable {
+    background-color: salmon;
+    width: 60%;
+    padding: 8px;
+}

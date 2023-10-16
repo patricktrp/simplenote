@@ -39,8 +39,7 @@ const Root = () => {
             <div className={styles['main-area']}>
                 <div className={styles['control-bar']}>
                     <BsLayoutSidebar onClick={toggleSidebar} className={styles['icon']} size="1em"/>
-                    <div>a</div>
-                    <div>a</div>
+                    <div>Profile..</div>
                 </div>
                 <Outlet />
             </div>
