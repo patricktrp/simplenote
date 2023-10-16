@@ -1,9 +1,9 @@
+import { useState } from 'react'
+import { BsLayoutSidebar } from 'react-icons/bs'
+import { IoCreateOutline, IoMenuOutline } from 'react-icons/io5'
+import { Outlet } from 'react-router-dom'
+import { createNote, getNotes } from '../api/notes'
 import styles from './root.module.css'
-import { Outlet, useLoaderData, Form } from 'react-router-dom'
-import { Link } from 'react-router-dom'
-import { getNotes, createNote } from '../api/notes'
-import { useAuth0 } from '@auth0/auth0-react'
-import { useEffect } from 'react'
 
 export const loader = async () => {
     const notes = await getNotes()
@@ -16,35 +16,32 @@ export const action = async () => {
 }
 
 const Root = () => {
-    const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
-
-    useEffect(() => {
-        const fetchNotes = async (token) => {
-            const notes = await getNotes(token)
-            return notes
-        }
-        async function getToken() {
-            const token = await getAccessTokenSilently()
-            const notes = await fetchNotes(token)
-            console.log(notes)
-        }
-        getToken()
-
-    }, [getAccessTokenSilently])
+    const [showSidebar, setShowSidebar] = useState(true)
+    
+    const toggleSidebar = () => {
+        setShowSidebar((oldVal) => {
+            return !oldVal
+        })
+    }
 
     return (
         <div className={styles['root-layout']}>
-            <div className={styles['sidebar']}>
-                <Form method='post'>
-                    <button type='submit'>New Note</button>
-                </Form>
-                <Link to='notes/1'>Note 1</Link>
-                <Link to='notes/2'>Note 2</Link>
-                <Link to='notes/3'>Note 3</Link>
-                {!isAuthenticated && <button onClick={loginWithRedirect}>login</button>}
-                {isAuthenticated && JSON.stringify(user)}
+            <div className={`${styles['sidebar']} ${!showSidebar ? styles['hidden'] : ''}`}>
+                <div className={styles['sidebar-header']}>
+                    <IoMenuOutline className={styles['icon']} size="1.2em"/>
+                    <div>All Notes</div>
+                    <IoCreateOutline className={styles['icon']} size="1.2em"/>
+                </div>
+                <div className={styles['search-bar']}>
+                    <input type='text'></input>
+                </div>
             </div>
-            <div className={styles['outlet']}>
+            <div className={styles['main-area']}>
+                <div className={styles['control-bar']}>
+                    <BsLayoutSidebar onClick={toggleSidebar} className={styles['icon']} size="1em"/>
+                    <div>a</div>
+                    <div>a</div>
+                </div>
                 <Outlet />
             </div>
         </div>

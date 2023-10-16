@@ -4,9 +4,52 @@
     width: 100vw;
 }
 
+.icon {
+    cursor: pointer;
+    color: var(--highlight-color);
+}
+
 .sidebar {
-    width: 15%;
-    background-color: lightsalmon; 
+    width: 25%;
+    border-right: 1px solid var(--secondary-color);
+}
+
+.sidebar-header {
+    height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--secondary-color)
+}
+
+.search-bar {
+    height: 6%;
+    border-bottom: 1px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar input {
+
+}
+
+.hidden {
+    display: none;
+}
+
+.main-area {
+    width: 100%;
+}
+
+.control-bar {
+    height: 6%;
+    display: flex;
+    border-bottom: 1px solid var(--secondary-color);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
 .outlet { 
