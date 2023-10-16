@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
 import { BsLayoutSidebar } from 'react-icons/bs'
 import { IoCreateOutline, IoMenuOutline } from 'react-icons/io5'
@@ -16,6 +17,7 @@ export const action = async () => {
 }
 
 const Root = () => {
+    const {loginWithRedirect, isAuthenticated} = useAuth0()
     const [showSidebar, setShowSidebar] = useState(true)
     
     const toggleSidebar = () => {
@@ -39,7 +41,7 @@ const Root = () => {
             <div className={styles['main-area']}>
                 <div className={styles['control-bar']}>
                     <BsLayoutSidebar onClick={toggleSidebar} className={styles['icon']} size="1em"/>
-                    <div>Profile..</div>
+                    <div>{isAuthenticated ? <p>logged in</p> : <button onClick={() => loginWithRedirect()}>Login</button>}</div>
                 </div>
                 <Outlet />
             </div>
