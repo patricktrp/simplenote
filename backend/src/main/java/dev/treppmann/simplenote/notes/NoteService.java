@@ -1,6 +1,7 @@
 package dev.treppmann.simplenote.notes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDTO> getNotes(String userId) {
-        List<Note> notes = noteRepository.findByUserId(userId);
+        List<Note> notes = noteRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return notes.stream().map(this::mapNoteToDTO).collect(Collectors.toList());
     }
 
@@ -28,6 +29,6 @@ public class NoteService implements INoteService {
     }
 
     private NoteDTO mapNoteToDTO(Note note) {
-        return new NoteDTO(note.getEditorContent(), note.getCreatedAt(), note.getCreatedAt());
+        return new NoteDTO(note.getId(), note.getEditorContent(), note.getCreatedAt(), note.getCreatedAt());
     }
 }

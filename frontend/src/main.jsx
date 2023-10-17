@@ -9,6 +9,12 @@ import './index.css'
 import Callback from './routes/callback'
 import Note, { loader as noteLoader } from './routes/note'
 import Root, { action as rootAction, loader as rootLoader } from './routes/root'
+import {
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -36,10 +42,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       domain={import.meta.env.VITE_AUTH0_DOMAIN}
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/callback`
+        redirect_uri: `${window.location.origin}/callback`,
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE
       }}
     >
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>,
 )
