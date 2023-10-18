@@ -13,12 +13,4 @@ public class SimplenoteApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SimplenoteApplication.class, args);
 	}
-
-	@Bean
-	CommandLineRunner runner (NoteRepository repository) {
-		return args -> {
-			Note note = new Note("user1", "This is a note", "This is a note");
-			repository.insert(note);
-		};
-	}
 }

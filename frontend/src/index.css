@@ -1,21 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+
 :root {
-    --background-primary: #f9f9f9;
-    --background-secondary: #fff;
-    --font-color-primary: #2d2e32;
-    --font-color-secondary: #767676;
-    --box-shadow-rgba: rgba(45, 46, 50, 0.2);
-    --highlight-color: #0c042b;
+  --background-primary: white;
+  --background-secondary: #ccc;
+  
+  --font-color-primary: black;
+  --font-color-secondary: #8c8f94;
+
+  --highlight-color: lightsalmon;
   }
   
   [data-theme="dark"] {
     --background-primary: #1d2327;
-    --background-secondary: #1f1f1f;
+    --background-secondary: #2c3338;
+    
     --font-color-primary: #eee;
-    --font-color-secondary: #ccc;
-    --secondary-color: #2c3338;
-    --box-shadow-rgba: rgba(238, 238, 238, 0.2);
+    --font-color-secondary: #8c8f94;
 
-    --highlight-color: #8c8f94;
+    --highlight-color: #0c042b;
   }
   
   body {

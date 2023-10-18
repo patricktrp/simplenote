@@ -1,4 +1,4 @@
-import { getNote } from "../api/notes";
+import { getNote, updateNoteById } from "../api/notes";
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -9,23 +9,45 @@ import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import { useEffect, useState } from "react";
 import styles from './note.module.css';
 import { useParams } from "react-router-dom";
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { debounce } from 'lodash'
+import { $getRoot } from "lexical";
 
 export const loader = async ({ params }) => {
   const note = await getNote(params.noteId)
   return note
 }
 
-function OnChangePlugin({ onChange }) {
-  const [editor] = useLexicalComposerContext();
+function BackendSyncPlugin({ noteId }) {
+  const [editor] = useLexicalComposerContext()
+
+  const syncBackend = async (editorContent) => {
+    const stringifiedEditorState = JSON.stringify(
+      editor.getEditorState().toJSON(),
+    );
+    const parsedEditorState = editor.parseEditorState(stringifiedEditorState);
+
+    const editorStateTextString = parsedEditorState.read(() => $getRoot().getTextContent())
+    await updateNoteById(noteId, editorContent, editorStateTextString);
+  }
+
+  const debouncedHandleChange = debounce(syncBackend, 500)
+
+  return (<OnChangePlugin onChange={debouncedHandleChange} ignoreSelectionChange />)
+}
+
+function AutoFocusPlugin() {
+  const [editor] = useLexicalComposerContext()
+  const params = useParams()
+
   useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      onChange(editorState);
-    });
-  }, [editor, onChange]);
+    editor.focus()
+  }, [editor, params])
+
+  return null
 }
 
 const Note = () => {
-  // const note = useLoaderData()
   const params = useParams()
 
   const theme = {}
@@ -40,22 +62,16 @@ const Note = () => {
     onError,
   };
 
-  const [editorState, setEditorState] = useState();
-
-  function onChange(editorState) {
-    console.log(editorState);
-  }
-
   return (
     <div className={styles['editor']}>
       <LexicalComposer initialConfig={initialConfig}>
         <PlainTextPlugin
           contentEditable={<ContentEditable className={styles['content-editable']} />}
-          placeholder={<div>{params.noteId}</div>}
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />
-        <OnChangePlugin onChange={onChange} />
+        <AutoFocusPlugin />
+        <BackendSyncPlugin noteId={params.noteId} />
       </LexicalComposer>
     </div>
   )

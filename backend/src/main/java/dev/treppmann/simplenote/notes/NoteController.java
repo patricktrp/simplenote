@@ -37,8 +37,9 @@ public class NoteController {
         return noteService.createNote(principal.getName());
     }
 
-    @PutMapping
-    public String updateNote() {
+    @PutMapping("/{noteId}")
+    public String updateNote(Principal principal, @PathVariable String noteId, @RequestBody NoteUpdateRequest noteUpdateRequest) {
+        noteService.updateNote(principal.getName(), noteId, noteUpdateRequest);
         return "update note";
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Document
 @Data
@@ -16,7 +18,7 @@ public class Note {
     @Id
     private String id;
     private String userId;
-    private String editorContent;
+    private Map<String,Object> editorContent;
     private String rawContent;
 
     @CreatedDate
@@ -24,7 +26,7 @@ public class Note {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public Note(String userId, String editorContent, String rawContent) {
+    public Note(String userId,  Map<String,Object> editorContent, String rawContent) {
         this.userId = userId;
         this.editorContent = editorContent;
         this.rawContent = rawContent;
@@ -32,5 +34,7 @@ public class Note {
 
     public Note(String userId) {
         this.userId = userId;
+        this.editorContent = new HashMap<>();
+        this.rawContent = "";
     }
 }

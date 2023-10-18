@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +27,17 @@ public class NoteService implements INoteService {
     public NoteDTO createNote(String userId) {
         Note note = new Note(userId);
         return mapNoteToDTO(noteRepository.insert(note));
+    }
+
+    @Override
+    public void updateNote(String userId, String noteId, NoteUpdateRequest noteUpdateRequest) {
+        Note note = noteRepository.findById(noteId).get();
+        System.out.println(note);
+        if (note.getUserId().equals(userId)) {
+            note.setEditorContent(noteUpdateRequest.editorContent());
+            note.setRawContent(noteUpdateRequest.rawContent());
+            noteRepository.save(note);
+        }
     }
 
     private NoteDTO mapNoteToDTO(Note note) {
