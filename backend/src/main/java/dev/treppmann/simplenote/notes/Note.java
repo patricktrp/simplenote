@@ -34,7 +34,5 @@ public class Note {
 
     public Note(String userId) {
         this.userId = userId;
-        this.editorContent = new HashMap<>();
-        this.rawContent = "";
     }
 }
