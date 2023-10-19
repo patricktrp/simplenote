@@ -7,4 +7,5 @@ public interface INoteService {
     List<NoteDTO> getNotes(String userId);
     NoteDTO createNote(String userId);
     void updateNote(String userId, String noteId, NoteUpdateRequest noteUpdateRequest);
+    NoteDTO getNoteById(String userId, String noteId);
 }

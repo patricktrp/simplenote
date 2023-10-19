@@ -28,8 +28,8 @@ public class NoteController {
     }
     
     @GetMapping("/{noteId}")
-    public String getNoteById(@PathVariable String noteId) {
-        return noteId;
+    public NoteDTO getNoteById(Principal principal, @PathVariable String noteId){
+        return noteService.getNoteById(principal.getName(), noteId);
     }
 
     @PostMapping

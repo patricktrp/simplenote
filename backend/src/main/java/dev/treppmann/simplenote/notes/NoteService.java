@@ -40,6 +40,17 @@ public class NoteService implements INoteService {
         }
     }
 
+    @Override
+    public NoteDTO getNoteById(String userId, String noteId) {
+        Note note = noteRepository.findById(noteId).get();
+        // TODO notfound here
+        if (note.getUserId().equals(userId)) {
+            return mapNoteToDTO(note);
+        }
+        // TODO: throw unauthorized here
+        return null;
+    }
+
     private NoteDTO mapNoteToDTO(Note note) {
         return new NoteDTO(note.getId(), note.getEditorContent(), note.getCreatedAt(), note.getCreatedAt());
     }
