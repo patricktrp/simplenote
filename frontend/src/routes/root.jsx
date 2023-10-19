@@ -1,11 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BsLayoutSidebar } from 'react-icons/bs'
 import { IoCreateOutline, IoMenuOutline, IoSettingsSharp } from 'react-icons/io5'
-import { Link, Outlet, Form, useLoaderData, redirect, useNavigate, useParams } from 'react-router-dom'
+import { Form, Link, Outlet, redirect, useLoaderData, useNavigate, useParams } from 'react-router-dom'
 import { createNote, getNotes } from '../api/notes'
-import styles from './root.module.css'
 import SettingModal from '../components/SettingModal'
+import styles from './root.module.css'
 
 export const loader = async () => {
     const notes = await getNotes()
@@ -19,10 +19,15 @@ export const action = async () => {
 
 const Root = () => {
     const { loginWithRedirect, isAuthenticated, user } = useAuth0()
+    const navigate = useNavigate()
+
+    if (!isAuthenticated) {
+        loginWithRedirect()
+    }
+
     const [showSettingModal, setShowSettingModal] = useState(false)
     const [showSidebar, setShowSidebar] = useState(true)
     const notes = useLoaderData()
-    const navigate = useNavigate()
     const params = useParams()
 
     useEffect(() => {
