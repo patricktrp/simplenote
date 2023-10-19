@@ -1,18 +1,32 @@
-import { getNoteById } from "../api/notes";
+import { getNoteById, updateNoteById } from "../api/notes";
 
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Editor from "../components/Editor";
-
-export const loader = async ({ params }) => {
-  const note = await getNoteById(params.noteId)
-  return note
-}
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Note = () => {
-  const note = useLoaderData()
+  const params = useParams()
+  const queryClient = useQueryClient()
+
+  const { data: note, isLoading } = useQuery({
+    queryKey: ["notes", params.noteId],
+    queryFn: () => getNoteById(params.noteId)
+  })
+
+  const noteUpdateMutation = useMutation({
+    mutationFn: ({ noteId, editorContent, rawContent }) => updateNoteById(noteId, editorContent, rawContent),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notes"])
+      queryClient.invalidateQueries(["notes", "params.noteId"])
+    }
+  })
+
+  if (isLoading) {
+    return <h3>Loading...</h3>
+  }
 
   return (
-      <Editor note={note}/>
+    <Editor note={note} onUpdate={noteUpdateMutation} />
   )
 }
 

@@ -1,10 +1,13 @@
 .editor {
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
 }
 
 .content-editable {
     width: 60%;
-    padding: 8px;
+    padding: 10px;
+    height: 1000px;
+    margin-top: 50px;
+    outline: none;
 }

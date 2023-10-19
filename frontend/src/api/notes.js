@@ -11,6 +11,7 @@ export const getNotes = async () => {
 }
 
 export const getNoteById = async (noteId) => {
+    console.log("HERE")
     const res = await axios.get("http://localhost:8080/notes/" + noteId, {
         withCredentials: true,
         headers: {
@@ -33,6 +34,9 @@ export const createNote = async () => {
 }
 
 export const updateNoteById = async (noteId, editorContent, rawContent) => {
+    console.log("#######")
+    console.log(noteId)
+    console.log(editorContent)
     console.log(rawContent)
     const res = await axios.put(`http://localhost:8080/notes/${noteId}`, {
         editorContent,

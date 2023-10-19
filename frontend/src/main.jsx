@@ -7,8 +7,8 @@ import {
 } from "react-router-dom"
 import './index.css'
 import Callback from './routes/callback'
-import Note, { loader as noteLoader } from './routes/note'
-import Root, { action as rootAction, loader as rootLoader } from './routes/root'
+import Note from './routes/note'
+import Root from './routes/root'
 import {
   QueryClient,
   QueryClientProvider
@@ -22,13 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    loader: rootLoader,
-    action: rootAction,
     children: [
       {
         path: "notes/:noteId",
         element: <Note />,
-        loader: noteLoader,
         errorElement: <ErrorPage />
       }
     ]

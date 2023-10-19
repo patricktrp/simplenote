@@ -7,6 +7,7 @@ public record NoteDTO(
         String noteId,
         Map<String, Object> content,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        String contentPreview
 ) {
 }

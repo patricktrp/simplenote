@@ -19,7 +19,7 @@ public class Note {
     private String id;
     private String userId;
     private Map<String,Object> editorContent;
-    private String rawContent;
+    private String rawContent = "";
 
     @CreatedDate
     private LocalDateTime createdAt;

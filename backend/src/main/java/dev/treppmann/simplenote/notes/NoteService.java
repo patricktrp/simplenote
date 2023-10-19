@@ -43,6 +43,7 @@ public class NoteService implements INoteService {
     @Override
     public NoteDTO getNoteById(String userId, String noteId) {
         Note note = noteRepository.findById(noteId).get();
+        System.out.println(note);
         // TODO notfound here
         if (note.getUserId().equals(userId)) {
             return mapNoteToDTO(note);
@@ -52,6 +53,8 @@ public class NoteService implements INoteService {
     }
 
     private NoteDTO mapNoteToDTO(Note note) {
-        return new NoteDTO(note.getId(), note.getEditorContent(), note.getCreatedAt(), note.getCreatedAt());
+        String content = note.getRawContent();
+        String contentPreview = content.split("\n")[0];
+        return new NoteDTO(note.getId(), note.getEditorContent(), note.getCreatedAt(), note.getCreatedAt(), contentPreview);
     }
 }

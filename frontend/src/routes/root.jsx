@@ -1,40 +1,35 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { BsLayoutSidebar } from 'react-icons/bs'
 import { IoCreateOutline, IoMenuOutline, IoSettingsSharp } from 'react-icons/io5'
-import { Form, Link, Outlet, redirect, useLoaderData, useNavigate, useParams } from 'react-router-dom'
+import { Link, Outlet, redirect, useParams, useNavigate } from 'react-router-dom'
 import { createNote, getNotes } from '../api/notes'
 import SettingModal from '../components/SettingModal'
 import styles from './root.module.css'
-
-export const loader = async () => {
-    const notes = await getNotes()
-    return notes
-}
-
-export const action = async () => {
-    const note = await createNote();
-    return redirect("/notes/" + note.noteId);
-}
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Root = () => {
+    const queryClient = useQueryClient()
+
+    const { data: notes } = useQuery({
+        queryKey: ["notes"],
+        queryFn: () => getNotes()
+    })
+
+    const newNoteMutation = useMutation({
+        mutationFn: () => createNote(),
+        onSuccess: (newNote) => {
+            console.log(newNote)
+            queryClient.invalidateQueries(["notes"])
+            navigate(`/notes/${newNote.noteId}`)
+        }
+    })
+
     const { loginWithRedirect, isAuthenticated, user } = useAuth0()
-    const navigate = useNavigate()
-
-    if (!isAuthenticated) {
-        loginWithRedirect()
-    }
-
     const [showSettingModal, setShowSettingModal] = useState(false)
     const [showSidebar, setShowSidebar] = useState(true)
-    const notes = useLoaderData()
     const params = useParams()
-
-    useEffect(() => {
-        if (notes.length > 0) {
-            navigate("/notes/" + notes[0].noteId)
-        }
-    }, [])
+    const navigate = useNavigate()
 
     const toggleSidebar = () => {
         setShowSidebar((sideBarWasVisible) => !sideBarWasVisible)
@@ -52,17 +47,15 @@ const Root = () => {
                     <div className={styles['sidebar-header']}>
                         <IoMenuOutline className={styles['icon']} size="35" />
                         <div>All Notes</div>
-                        <Form method="post">
-                            <button type="submit" className={styles['icon-button']}>
-                                <IoCreateOutline className={styles['icon']} size="27" />
-                            </button>
-                        </Form>
+                        <button onClick={() => newNoteMutation.mutate()} className={styles['icon-button']}>
+                            <IoCreateOutline className={styles['icon']} size="27" />
+                        </button>
                     </div>
                     <div className={styles['search-bar']}>
                         <input type='text'></input>
                     </div>
                     {notes?.map(note =>
-                        <Link to={`/notes/${note.noteId}`} className={`${styles['note-overview']} ${note.noteId === params.noteId ? styles['selected'] : ''}`} key={note.createdAt}>{"New Note..."}</Link>
+                        <Link to={`/notes/${note.noteId}`} className={`${styles['note-overview']} ${note.noteId === params.noteId ? styles['selected'] : ''}`} key={note.createdAt}>{note.contentPreview || "New Note.."}</Link>
                     )}
                 </div>
                 <div className={styles['main-area']}>
