@@ -1,31 +1,36 @@
 import { useAuth0 } from '@auth0/auth0-react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { BsLayoutSidebar } from 'react-icons/bs'
 import { IoCreateOutline, IoMenuOutline, IoSettingsSharp } from 'react-icons/io5'
-import { Link, Outlet, redirect, useParams, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom'
 import { createNote, getNotes } from '../api/notes'
 import SettingModal from '../components/SettingModal'
 import styles from './root.module.css'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Root = () => {
     const queryClient = useQueryClient()
+    const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently, isLoading} = useAuth0()
 
     const { data: notes } = useQuery({
         queryKey: ["notes"],
-        queryFn: () => getNotes()
+        queryFn: async () => {
+            const token = await getAccessTokenSilently()
+            return getNotes(token)
+        }
     })
 
     const newNoteMutation = useMutation({
-        mutationFn: () => createNote(),
+        mutationFn: async () => {
+            const token = await getAccessTokenSilently()
+            return createNote(token)
+        },
         onSuccess: (newNote) => {
-            console.log(newNote)
             queryClient.invalidateQueries(["notes"])
             navigate(`/notes/${newNote.noteId}`)
         }
     })
 
-    const { loginWithRedirect, isAuthenticated, user } = useAuth0()
     const [showSettingModal, setShowSettingModal] = useState(false)
     const [showSidebar, setShowSidebar] = useState(true)
     const params = useParams()
@@ -37,6 +42,10 @@ const Root = () => {
 
     const toggleSettingModal = () => {
         setShowSettingModal((settingModalWasVisible) => !settingModalWasVisible)
+    }
+
+    if (isLoading) {
+        return <h3>Loading...</h3>
     }
 
     return (

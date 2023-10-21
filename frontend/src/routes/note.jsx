@@ -1,20 +1,28 @@
 import { getNoteById, updateNoteById } from "../api/notes";
 
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from "react-router-dom";
 import Editor from "../components/Editor";
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const Note = () => {
   const params = useParams()
   const queryClient = useQueryClient()
+  const { getAccessTokenSilently } = useAuth0()
 
   const { data: note, isLoading } = useQuery({
     queryKey: ["notes", params.noteId],
-    queryFn: () => getNoteById(params.noteId)
+    queryFn: async () => {
+      const token = await getAccessTokenSilently()
+      return getNoteById(token, params.noteId)
+    }
   })
 
   const noteUpdateMutation = useMutation({
-    mutationFn: ({ noteId, editorContent, rawContent }) => updateNoteById(noteId, editorContent, rawContent),
+    mutationFn: async ({ noteId, editorContent, rawContent }) => {
+      const token = await getAccessTokenSilently()
+      return updateNoteById(token, noteId, editorContent, rawContent)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(["notes"])
       queryClient.invalidateQueries(["notes", "params.noteId"])
