@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Note {
     private String id;
     private String userId;
     private Map<String,Object> editorContent;
+    @TextIndexed
     private String rawContent = "";
 
     @CreatedDate

@@ -21,9 +21,16 @@ public class NoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NoteDTO>> getNotes(Principal principal) {
-        if (principal == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<List<NoteDTO>> getNotes(Principal principal, @RequestParam(required = false) String query) {
+        System.out.println(query);
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         String userId = principal.getName();
+
+        if (query != null && !query.trim().isEmpty()) {
+            return ResponseEntity.ok(noteService.findNotesBySearchQuery(userId, query));
+        }
         return ResponseEntity.ok(noteService.getNotes(userId));
     }
     
