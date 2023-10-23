@@ -38,8 +38,13 @@ public class NoteController {
     }
 
     @PutMapping("/{noteId}")
-    public String updateNote(Principal principal, @PathVariable String noteId, @RequestBody NoteUpdateRequest noteUpdateRequest) {
+    public String updateNoteById(Principal principal, @PathVariable String noteId, @RequestBody NoteUpdateRequest noteUpdateRequest) {
         noteService.updateNote(principal.getName(), noteId, noteUpdateRequest);
         return "update note";
+    }
+
+    @DeleteMapping("/{noteId}")
+    public void deleteNoteById(Principal principal, @PathVariable String noteId) {
+        noteService.deleteNoteById(principal.getName(), noteId);
     }
 }

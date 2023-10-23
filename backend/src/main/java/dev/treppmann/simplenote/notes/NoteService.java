@@ -32,7 +32,6 @@ public class NoteService implements INoteService {
     @Override
     public void updateNote(String userId, String noteId, NoteUpdateRequest noteUpdateRequest) {
         Note note = noteRepository.findById(noteId).get();
-        System.out.println(note);
         if (note.getUserId().equals(userId)) {
             note.setEditorContent(noteUpdateRequest.editorContent());
             note.setRawContent(noteUpdateRequest.rawContent());
@@ -50,6 +49,14 @@ public class NoteService implements INoteService {
         }
         // TODO: throw unauthorized here
         return null;
+    }
+
+    @Override
+    public void deleteNoteById(String userId, String noteId) {
+        Note note = noteRepository.findById(noteId).get();
+        if (note.getUserId().equals(userId)) {
+            noteRepository.delete(note);
+        }
     }
 
     private NoteDTO mapNoteToDTO(Note note) {

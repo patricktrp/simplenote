@@ -7,10 +7,11 @@ import { Link, Outlet, useNavigate, useParams } from 'react-router-dom'
 import { createNote, getNotes } from '../api/notes'
 import SettingModal from '../components/SettingModal'
 import styles from './root.module.css'
+import Skeleton from 'react-loading-skeleton'
 
 const Root = () => {
     const queryClient = useQueryClient()
-    const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently, isLoading} = useAuth0()
+    const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently, isLoading } = useAuth0()
 
     const { data: notes } = useQuery({
         queryKey: ["notes"],
@@ -61,7 +62,7 @@ const Root = () => {
                         </button>
                     </div>
                     <div className={styles['search-bar']}>
-                        <input type='text'></input>
+                        <input type='text' placeholder='search...' />
                     </div>
                     {notes?.map(note =>
                         <Link to={`/notes/${note.noteId}`} className={`${styles['note-overview']} ${note.noteId === params.noteId ? styles['selected'] : ''}`} key={note.createdAt}>{note.contentPreview || "New Note.."}</Link>

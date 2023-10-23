@@ -8,4 +8,6 @@ public interface INoteService {
     NoteDTO createNote(String userId);
     void updateNote(String userId, String noteId, NoteUpdateRequest noteUpdateRequest);
     NoteDTO getNoteById(String userId, String noteId);
+
+    void deleteNoteById(String userId, String noteId);
 }
