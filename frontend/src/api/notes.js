@@ -28,11 +28,11 @@ export const createNote = async (token) => {
         },
         withCredentials: true
     })
-    console.log(res.data)
     return res.data
 }
 
 export const updateNoteById = async (token, noteId, editorContent, rawContent) => {
+    editorContent = JSON.stringify(editorContent)
     const res = await axios.put(`http://localhost:8080/notes/${noteId}`, {
         editorContent,
         rawContent

@@ -38,8 +38,25 @@
     justify-content: center;
 }
 
-.search-bar input {
+.search-bar-icon {
+    color: var(--font-color-secondary);
+}
 
+.search-bar-inner-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.search-bar input {
+    border: none;
+    background: none;
+    box-shadow: none;
+    outline: none;
+    color: var(--font-color-primary);
+    font-size: inherit;
+    width: 90%;
 }
 
 .note-overview {

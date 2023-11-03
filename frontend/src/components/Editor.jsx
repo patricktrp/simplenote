@@ -56,19 +56,19 @@ const Editor = ({ note, onUpdate }) => {
   };
 
   if (note?.content) {
-    initialConfig['editorState'] = JSON.stringify(note?.content)
+    initialConfig['editorState'] = note?.content
   }
 
   return (
     <div className={styles['editor']}>
-      <LexicalComposer key={note.noteId} initialConfig={initialConfig}>
+      <LexicalComposer key={note?.noteId} initialConfig={initialConfig}>
         <PlainTextPlugin
           contentEditable={<ContentEditable className={styles['content-editable']} />}
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />
         <AutoFocusPlugin />
-        <BackendSyncPlugin noteId={note.noteId} onUpdate={onUpdate} />
+        <BackendSyncPlugin noteId={note?.noteId} onUpdate={onUpdate} />
       </LexicalComposer>
     </div>
   )

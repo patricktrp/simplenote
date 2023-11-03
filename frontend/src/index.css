@@ -7,7 +7,7 @@
   --font-color-primary: black;
   --font-color-secondary: #8c8f94;
 
-  --highlight-color: lightsalmon;
+  --highlight-color: #ccc;
   }
   
   [data-theme="dark"] {
@@ -17,7 +17,7 @@
     --font-color-primary: #eee;
     --font-color-secondary: #8c8f94;
 
-    --highlight-color: #0c042b;
+    --highlight-color: #2c3338;
   }
   
   body {

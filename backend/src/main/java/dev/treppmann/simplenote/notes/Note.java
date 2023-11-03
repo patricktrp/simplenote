@@ -18,7 +18,7 @@ public class Note {
     @Id
     private String id;
     private String userId;
-    private Map<String,Object> editorContent;
+    private String editorContent;
     private String rawContent = "";
 
     @CreatedDate
@@ -26,7 +26,7 @@ public class Note {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public Note(String userId,  Map<String,Object> editorContent, String rawContent) {
+    public Note(String userId,  String editorContent, String rawContent) {
         this.userId = userId;
         this.editorContent = editorContent;
         this.rawContent = rawContent;

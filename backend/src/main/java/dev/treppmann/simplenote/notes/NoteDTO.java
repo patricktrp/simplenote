@@ -5,7 +5,7 @@ import java.util.Map;
 
 public record NoteDTO(
         String noteId,
-        Map<String, Object> content,
+        String content,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         String contentPreview
