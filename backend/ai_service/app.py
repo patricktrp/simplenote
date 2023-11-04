@@ -6,8 +6,6 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from flask import Flask, request
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
 
 llm = OpenAI(temperature=0.7)
@@ -21,6 +19,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     query = request.args.get('query')
+    print(query)
     user = request.args.get('user')
 
     docs = vectordb.similarity_search(query, pre_filter={
@@ -29,17 +28,18 @@ def hello():
         }
     })    
     
+    print(docs)
+    
     docs_page_content = " ".join([d.page_content for d in docs])
     prompt = PromptTemplate(
         input_variables=["docs", "question"],
                         template="""
-                        You're a helpful assistant. Here are relevant information you might need to answer the following question:
+                        You're a helpful assistant. Here are relevant information you might need to answer a question:
                         {docs}
                         
                         Please answer this question:
                         {question}
-                        
-                        If you're not sure, just say I don't know.
+                    
                         """
     )
 
@@ -48,4 +48,4 @@ def hello():
     return response
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
