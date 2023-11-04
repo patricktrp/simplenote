@@ -26,7 +26,7 @@ function BackendSyncPlugin({ noteId, onUpdate }) {
     onUpdate.mutate({ noteId, editorContent, rawContent: rawContent })
   }
 
-  const debouncedHandleChange = debounce(syncBackend, 500)
+  const debouncedHandleChange = debounce(syncBackend, 1500)
 
   return (<OnChangePlugin onChange={debouncedHandleChange} ignoreSelectionChange />)
 }

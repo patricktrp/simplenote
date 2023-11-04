@@ -27,7 +27,7 @@ const Root = () => {
     })
 
     useEffect(() => {
-        if (notes) {
+        if (notes && notes.length > 0) {
             const firstNoteId = notes[0].noteId
             navigate(`/notes/${firstNoteId}`)
         }
