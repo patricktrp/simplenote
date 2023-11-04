@@ -29,9 +29,10 @@ for change in change_stream:
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
         documents = text_splitter.split_documents([doc])
         
+        
         embedding = OpenAIEmbeddings()
         col = client.get_default_database().get_collection("embeddings")
-        vec = MongoDBAtlasVectorSearch.from_documents(documents, embedding, collection=col)
+        vec = MongoDBAtlasVectorSearch.from_documents(documents, embedding, collection=collection)
     
     if operation_type == "delete":
         doc_id = change['documentKey']['_id']
