@@ -11,7 +11,7 @@ load_dotenv()
 
 
 llm = OpenAI(temperature=0.7)
-MONGO_URI = "mongodb+srv://api:Z3JGMLeHO2Up7Xrb@simplenote.xenoplk.mongodb.net/simplenote?retryWrites=true&w=majority"
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 embedding = OpenAIEmbeddings()
 col = client.get_default_database().get_collection("embeddings")
