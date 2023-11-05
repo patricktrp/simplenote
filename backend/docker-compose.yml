@@ -9,6 +9,9 @@ services:
       - MONGO_URI=${MONGO_URI}
       - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
       - AUTH0_ISSUER_URI=${AUTH0_ISSUER_URI}
+    depends_on: 
+      - ai_service
+    restart: always
   
   embedding_worker:
     build: './embedding_worker'
@@ -19,8 +22,6 @@ services:
 
   ai_service:
     build: './ai_service'
-    ports:
-      - 5000:5000
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGO_URI=${MONGO_URI}

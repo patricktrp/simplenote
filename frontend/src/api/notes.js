@@ -44,3 +44,15 @@ export const updateNoteById = async (token, noteId, editorContent, rawContent) =
     })
     return res.data
 }
+
+
+export const getAiAssistantAnswer = async (token, query) => {
+    const queryParam = encodeURIComponent(query)
+    const res = await axios.get(`http://localhost:8080/assistant?query=${queryParam}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+    })
+    return res.data
+}

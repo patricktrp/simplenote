@@ -1,5 +1,6 @@
 package dev.treppmann.simplenote.notes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -10,4 +11,6 @@ public interface INoteService {
     NoteDTO getNoteById(String userId, String noteId);
 
     void deleteNoteById(String userId, String noteId);
+
+    String askAiAssistant(String name, String query);
 }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notes")
 public class NoteController {
     private final INoteService noteService;
 
@@ -20,31 +19,36 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @GetMapping
+    @GetMapping("/notes")
     public ResponseEntity<List<NoteDTO>> getNotes(Principal principal) {
         if (principal == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         String userId = principal.getName();
         return ResponseEntity.ok(noteService.getNotes(userId));
     }
     
-    @GetMapping("/{noteId}")
+    @GetMapping("/notes/{noteId}")
     public NoteDTO getNoteById(Principal principal, @PathVariable String noteId){
         return noteService.getNoteById(principal.getName(), noteId);
     }
 
-    @PostMapping
+    @PostMapping("/notes")
     public NoteDTO createNote(Principal principal) {
         return noteService.createNote(principal.getName());
     }
 
-    @PutMapping("/{noteId}")
+    @PutMapping("/notes/{noteId}")
     public String updateNoteById(Principal principal, @PathVariable String noteId, @RequestBody NoteUpdateRequest noteUpdateRequest) {
         noteService.updateNote(principal.getName(), noteId, noteUpdateRequest);
         return "update note";
     }
 
-    @DeleteMapping("/{noteId}")
+    @DeleteMapping("/notes/{noteId}")
     public void deleteNoteById(Principal principal, @PathVariable String noteId) {
         noteService.deleteNoteById(principal.getName(), noteId);
+    }
+
+    @GetMapping("/assistant")
+    public String askAiAssistant(Principal principal, @RequestParam String query) {
+        return noteService.askAiAssistant(principal.getName(), query);
     }
 }
