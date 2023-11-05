@@ -26,7 +26,7 @@ for change in change_stream:
         
         doc = Document(page_content=raw_content, metadata={"userId": user_id, "originalDocument": original_document})
         
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         documents = text_splitter.split_documents([doc])
         
         

@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-query'
 import { SettingProvider } from './context/SettingContext'
 import ErrorPage from './error-page'
+import Assistant from './routes/assistant'
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         path: "notes/:noteId",
         element: <Note />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "/assistant",
+        element: <Assistant />
       }
     ]
   },

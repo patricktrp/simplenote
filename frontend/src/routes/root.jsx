@@ -9,6 +9,7 @@ import SettingModal from '../components/SettingModal'
 import styles from './root.module.css'
 import { redirect } from 'react-router-dom'
 import { MdOutlineSearch } from 'react-icons/md'
+import { FaRobot } from 'react-icons/fa6'
 
 const Root = () => {
     const queryClient = useQueryClient()
@@ -26,12 +27,12 @@ const Root = () => {
         }
     })
 
-    useEffect(() => {
-        if (notes && notes.length > 0) {
-            const firstNoteId = notes[0].noteId
-            navigate(`/notes/${firstNoteId}`)
-        }
-    }, [notes])
+    // useEffect(() => {
+    //     if (notes && notes.length > 0) {
+    //         const firstNoteId = notes[0].noteId
+    //         navigate(`/notes/${firstNoteId}`)
+    //     }
+    // }, [notes])
 
     const newNoteMutation = useMutation({
         mutationFn: async () => {
@@ -78,12 +79,17 @@ const Root = () => {
                 <div className={styles['main-area']}>
                     <div className={styles['control-bar']}>
                         <BsLayoutSidebar onClick={toggleSidebar} className={styles['icon']} size="24" />
-                        <IoSettingsSharp className={styles['icon']} size="24" onClick={toggleSettingModal} />
+                        <div>
+                            <IoSettingsSharp className={styles['icon']} size="24" onClick={toggleSettingModal} />
+                            <Link to="/assistant">
+                                <FaRobot className={styles['search-bar-icon']} size="24" />
+                            </Link>
+                        </div>
                         <div>{isAuthenticated ? <p>{user?.nickname}</p> : <button onClick={() => loginWithRedirect()}>Login</button>}</div>
                     </div>
                     <Outlet />
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }
